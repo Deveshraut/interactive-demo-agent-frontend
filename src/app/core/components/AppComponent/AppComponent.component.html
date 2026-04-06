@@ -1,3 +1,81 @@
-<p>
-  AppComponent works!
-</p>
+@if (demoStatus() === 'listing' || demoStatus() === 'connecting' || demoStatus() === 'disconnected') {
+  <app-workflow-selector
+    [workflows]="workflows()"
+    (select)="onWorkflowSelect($event)"
+  />
+}
+
+@if (demoStatus() !== 'listing' && demoStatus() !== 'connecting' && demoStatus() !== 'disconnected') {
+  <div class="demo-shell">
+
+    <header class="demo-header">
+      <div class="header-left">
+        <span class="logo">▶ Demo Agent</span>
+        @if (workflowName()) {
+          <span class="workflow-name">{{ workflowName() }}</span>
+        }
+      </div>
+      <div class="header-right">
+        <span class="conn-indicator" [class.online]="wsService.connected()">
+          {{ wsService.connected() ? '● Live' : '○ Reconnecting…' }}
+        </span>
+      </div>
+    </header>
+
+    <main class="demo-main">
+
+      <section class="left-col">
+        <app-video-player
+          [videoSrc]="videoSrc()"
+          [controlEvent]="latestVideoControl()"
+          (timestamp$)="onVideoTimestamp($event)"
+        />
+
+        <app-narration-panel
+          [segmentIndex]="segmentIndex()"
+          [segmentTitle]="segmentTitle()"
+          [narrationText]="narrationText()"
+        />
+
+        <app-demo-controls
+          [demoStatus]="demoStatus()"
+          (next)="sendCommand('next')"
+          (pause)="sendCommand('pause')"
+          (restart)="sendCommand('restart')"
+          (quit)="sendCommand('quit')"
+        />
+      </section>
+
+      <aside class="right-col">
+        <app-chat-panel
+          [demoStatus]="demoStatus()"
+          [isRecording]="voiceService.recording()"
+          [messages]="chatMessages()"
+          [thinking]="thinking()"
+          (sendText)="onUserText($event)"
+          (voiceToggle)="onVoiceToggle()"
+        />
+      </aside>
+
+    </main>
+
+    @if (demoStatus() === 'complete') {
+      <div class="complete-overlay">
+        <div class="complete-card">
+          <div class="complete-icon">✓</div>
+          <h2>Demo Complete</h2>
+          <p>Thanks for watching!</p>
+          <button class="btn-restart-demo" (click)="resetToSelector()">
+            Watch Another Demo
+          </button>
+        </div>
+      </div>
+    }
+
+    @if (errorMessage()) {
+      <div class="error-toast" (click)="errorMessage.set(null)">
+        ⚠ {{ errorMessage() }}
+      </div>
+    }
+  </div>
+}

@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+// src/app/components/workflow-selector/workflow-selector.component.ts
+import { Component, input, output } from '@angular/core';
+import { WorkflowSummary } from '../../models/demo-events.models'; 
 
 @Component({
-  selector: 'app-WorkflowSelectorComponent',
+  selector: 'app-workflow-selector',
+  standalone: true,
   templateUrl: './WorkflowSelectorComponent.component.html',
-  styleUrls: ['./WorkflowSelectorComponent.component.css']
+  styleUrl: './WorkflowSelectorComponent.component.scss'
 })
-export class WorkflowSelectorComponentComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+export class WorkflowSelectorComponent {
+  workflows = input.required<WorkflowSummary[]>();
+  select    = output<string>();
 }
