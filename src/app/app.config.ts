@@ -1,9 +1,9 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+// src/app/app.config.ts
+import { ApplicationConfig, provideExperimentalZonelessChangeDetection } from '@angular/core';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    
+    // We are running 100% zoneless!
+    provideExperimentalZonelessChangeDetection(), 
   ]
 };
