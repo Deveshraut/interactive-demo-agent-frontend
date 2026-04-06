@@ -1,2 +1,37 @@
-node_modules
+# Node dependencies
+/node_modules
 
+# Angular build output (The compiled code)
+/dist
+/out-tsc
+
+# Angular CLI cache (Speeds up local builds, shouldn't be shared)
+.angular/
+
+# Testing coverage reports
+/coverage
+
+# Logs
+npm-debug.log*
+yarn-error.log*
+yarn-debug.log*
+
+# IDEs and Editors (Prevents your local editor settings from overriding others)
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# VS Code specific
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# OS System Files
+.DS_Store
+Thumbs.db
