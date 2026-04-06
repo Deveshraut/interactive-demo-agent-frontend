@@ -1,0 +1,48 @@
+/* src/app/components/narration-panel/narration-panel.component.scss */
+.narration-panel {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  min-height: 100px;
+}
+
+.segment-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.segment-index {
+  background: rgba(99, 179, 237, 0.2);
+  color: #63b3ed;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  border: 1px solid rgba(99, 179, 237, 0.3);
+  flex-shrink: 0;
+}
+
+.segment-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.narration-text {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+}
+
+.narration-empty {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.25);
+  font-style: italic;
+  margin: 0;
+}

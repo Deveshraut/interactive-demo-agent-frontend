@@ -1,0 +1,17 @@
+<div class="player-wrapper">
+  <video
+    #videoEl
+    class="video-element"
+    [src]="videoSrc()"
+    preload="auto"
+    playsinline
+    (timeupdate)="onTimeUpdate()"
+  ></video>
+
+  @if (!videoSrc()) {
+    <div class="placeholder">
+      <span>▶</span>
+      <p>Select a workflow to begin</p>
+    </div>
+  }
+</div>

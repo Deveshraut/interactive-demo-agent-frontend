@@ -6,7 +6,11 @@ import { Subscription } from 'rxjs';
 import { DemoWsService } from '../../services/demo-ws.service';
 import { AudioPlayerService } from '../../services/audio-player.service';
 import { VoiceRecorderService } from '../../services/voice-recorder.service';
-import { WorkflowSelectorComponent } from '../WorkflowSelectorComponent/WorkflowSelectorComponent.component';
+import { WorkflowSelectorComponent } from '../workflow-selector/workflow-selector.component';
+import { VideoPlayerComponent } from '../video-player/video-player.component';
+import { NarrationPanelComponent } from '../narration-panel/narration-panel.component';
+import { DemoControlsComponent } from '../demo-controls/demo-controls.component';
+import { ChatPanelComponent, ChatMessage} from '../chat-panel/chat-panel.component';
 
 import {
   DemoEvent, DemoStatus, VideoControlEvent, WorkflowSummary
@@ -20,13 +24,13 @@ const VIDEO_BASE = '/assets/videos';
   standalone: true,
   imports: [
      WorkflowSelectorComponent,
-    // VideoPlayerComponent,
-    // NarrationPanelComponent,
-    // ChatPanelComponent,
-    // DemoControlsComponent,
+     VideoPlayerComponent,
+     NarrationPanelComponent,
+     ChatPanelComponent,
+     DemoControlsComponent,
   ],
-  templateUrl: './AppComponent.component.html',
-  styleUrl: './AppComponent.component.scss'
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit, OnDestroy {
   wsService    = inject(DemoWsService);
@@ -42,7 +46,7 @@ export class AppComponent implements OnInit, OnDestroy {
   segmentTitle       = signal<string>('');
   narrationText      = signal<string>('');
   latestVideoControl = signal<VideoControlEvent | null>(null);
-  //chatMessages       = signal<ChatMessage[]>([]);
+  chatMessages       = signal<ChatMessage[]>([]);
   thinking           = signal<boolean>(false);
   errorMessage       = signal<string | null>(null);
 
@@ -93,7 +97,7 @@ export class AppComponent implements OnInit, OnDestroy {
       case 'agent_answer':
         this.thinking.set(false);
         this.demoStatus.set('awaiting');
-        //this._addMessage('agent', event.text);
+        this._addMessage('agent', event.text);
         if (event.audio_b64) {
           this.audioService.playBase64(event.audio_b64);
         }
@@ -163,14 +167,14 @@ export class AppComponent implements OnInit, OnDestroy {
     this.segmentIndex.set(0);
     this.segmentTitle.set('');
     this.narrationText.set('');
-    //this.chatMessages.set([]);
+    this.chatMessages.set([]);
     this.thinking.set(false);
   }
 
-  // private _addMessage(role: 'user' | 'agent', text: string): void {
-  //   this.chatMessages.update(msgs => [
-  //     ...msgs,
-  //     { role, text, timestamp: new Date() }
-  //   ]);
-  // }
+  private _addMessage(role: 'user' | 'agent', text: string): void {
+    this.chatMessages.update(msgs => [
+      ...msgs,
+      { role, text, timestamp: new Date() }
+    ]);
+  }
 }

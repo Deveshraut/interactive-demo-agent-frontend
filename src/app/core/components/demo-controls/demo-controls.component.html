@@ -1,0 +1,37 @@
+<div class="controls">
+  <button
+    class="btn btn-primary"
+    (click)="next.emit()"
+    [disabled]="!canAdvance()"
+    title="Next segment"
+  >
+    Next Step ›
+  </button>
+
+  <button
+    class="btn btn-secondary"
+    (click)="pause.emit()"
+    [disabled]="!canControl()"
+    title="Pause demo"
+  >
+    ⏸ Pause
+  </button>
+
+  <button
+    class="btn btn-secondary"
+    (click)="restart.emit()"
+    [disabled]="!canControl()"
+    title="Restart segment"
+  >
+    ↺ Restart
+  </button>
+
+  <button
+    class="btn btn-danger"
+    (click)="quit.emit()"
+    [disabled]="!canControl()"
+    title="End demo"
+  >
+    ✕ End
+  </button>
+</div>

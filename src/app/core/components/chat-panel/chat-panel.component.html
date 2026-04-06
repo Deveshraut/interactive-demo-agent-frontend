@@ -1,0 +1,59 @@
+<div class="chat-panel">
+  <div class="chat-header">
+    <span class="chat-title">Ask anything</span>
+    <span class="status-dot" [class.active]="isActive()"></span>
+  </div>
+
+  <div class="message-list" #messageList>
+    @if (messages().length === 0) {
+      <div class="chat-empty">
+        <p>Questions about the demo? Ask away — or use voice input.</p>
+      </div>
+    }
+
+    @for (msg of messages(); track msg.timestamp) {
+      <div class="message" [class.user]="msg.role === 'user'" [class.agent]="msg.role === 'agent'">
+        <span class="message-role">{{ msg.role === 'user' ? 'You' : 'Agent' }}</span>
+        <p class="message-text">{{ msg.text }}</p>
+      </div>
+    }
+
+    @if (thinking()) {
+      <div class="message agent thinking">
+        <span class="message-role">Agent</span>
+        <div class="dots">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="input-row">
+    <input
+      class="chat-input"
+      type="text"
+      placeholder="Ask a question or type a command…"
+      [(ngModel)]="inputText"
+      (keydown.enter)="submitText()"
+      [disabled]="!canInput()"
+    />
+
+    <button
+      class="btn-voice"
+      [class.recording]="isRecording()"
+      (click)="voiceToggle.emit()"
+      [disabled]="!canInput()"
+      title="Hold to speak"
+    >
+      {{ isRecording() ? '⏹' : '🎙' }}
+    </button>
+
+    <button
+      class="btn-send"
+      (click)="submitText()"
+      [disabled]="!canInput() || !inputText.trim()"
+    >
+      Send
+    </button>
+  </div>
+</div>

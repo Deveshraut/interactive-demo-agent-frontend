@@ -1,0 +1,51 @@
+/* src/app/components/demo-controls/demo-controls.component.scss */
+.controls {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: rgba(99, 179, 237, 0.25);
+  color: #63b3ed;
+  border: 1px solid rgba(99, 179, 237, 0.4);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: rgba(99, 179, 237, 0.4);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.btn-danger {
+  background: rgba(252, 129, 129, 0.1);
+  color: rgba(252, 129, 129, 0.8);
+  border: 1px solid rgba(252, 129, 129, 0.25);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: rgba(252, 129, 129, 0.2);
+}

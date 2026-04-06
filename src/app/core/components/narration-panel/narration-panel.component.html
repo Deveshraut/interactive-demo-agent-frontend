@@ -1,0 +1,14 @@
+<div class="narration-panel">
+  @if (segmentTitle()) {
+    <div class="segment-badge">
+      <span class="segment-index">Step {{ segmentIndex() + 1 }}</span>
+      <span class="segment-title">{{ segmentTitle() }}</span>
+    </div>
+  }
+
+  @if (narrationText()) {
+    <p class="narration-text">{{ narrationText() }}</p>
+  } @else {
+    <p class="narration-empty">Narration will appear here once the demo begins…</p>
+  }
+</div>
