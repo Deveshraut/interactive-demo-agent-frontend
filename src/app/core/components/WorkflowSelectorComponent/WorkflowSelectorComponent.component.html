@@ -1,3 +1,22 @@
-<p>
-  WorkflowSelectorComponent works!
-</p>
+<div class="selector-container">
+  <div class="selector-header">
+    <div class="logo-mark">▶</div>
+    <h1>Demo Agent</h1>
+    <p>Choose a workflow to begin the interactive demo</p>
+  </div>
+
+  <div class="workflow-grid">
+    @for (wf of workflows(); track wf.workflow_id) {
+      <button
+        class="workflow-card"
+        (click)="select.emit(wf.workflow_id)"
+      >
+        <div class="card-icon">🎬</div>
+        <div class="card-body">
+          <h3>{{ wf.name }}</h3>
+          <span class="card-cta">Start Demo →</span>
+        </div>
+      </button>
+    }
+  </div>
+</div>
