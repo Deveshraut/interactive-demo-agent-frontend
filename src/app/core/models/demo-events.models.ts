@@ -1,5 +1,3 @@
-// src/app/models/demo-events.model.ts
-
 export interface WorkflowSummary {
   workflow_id: string;
   name: string;

@@ -1,14 +1,9 @@
-// src/app/core/services/audio-player.service.ts
 import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class AudioPlayerService {
   private currentAudio: HTMLAudioElement | null = null;
 
-  /**
-   * Play a base64-encoded MP3 string from an agent_answer TTS response.
-   * Stops any currently playing audio first.
-   */
   async playBase64(base64: string): Promise<void> {
     this.stop();
 

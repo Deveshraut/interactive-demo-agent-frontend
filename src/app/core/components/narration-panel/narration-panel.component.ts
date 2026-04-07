@@ -1,4 +1,3 @@
-// src/app/components/narration-panel/narration-panel.component.ts
 import { Component, input } from '@angular/core';
 
 @Component({

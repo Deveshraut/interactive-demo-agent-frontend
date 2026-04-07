@@ -1,4 +1,3 @@
-// src/app/components/demo-controls/demo-controls.component.ts
 import { Component, input, output, computed } from '@angular/core';
 import { DemoStatus } from '../../models/demo-events.models';
 

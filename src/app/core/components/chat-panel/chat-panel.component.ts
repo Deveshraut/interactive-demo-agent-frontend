@@ -1,4 +1,3 @@
-// src/app/components/chat-panel/chat-panel.component.ts
 import { Component, input, output, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DemoStatus } from '../../models/demo-events.models';

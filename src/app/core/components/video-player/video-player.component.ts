@@ -1,4 +1,3 @@
-// src/app/components/video-player/video-player.component.ts
 import {
   Component, ElementRef, input, OnChanges,
   output, SimpleChanges, viewChild

@@ -1,4 +1,3 @@
-// src/app/services/demo-ws.service.ts
 import { Injectable, OnDestroy, signal } from '@angular/core';
 import { Subject } from 'rxjs';
 import { DemoEvent, UserTextMessage, UserVoiceHeader, VideoTimestampMessage } from '../models/demo-events.models';

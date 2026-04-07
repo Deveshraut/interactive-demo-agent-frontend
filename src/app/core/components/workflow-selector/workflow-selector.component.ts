@@ -1,4 +1,3 @@
-// src/app/components/workflow-selector/workflow-selector.component.ts
 import { Component, input, output } from '@angular/core';
 import { WorkflowSummary } from '../../models/demo-events.models'; 
 
