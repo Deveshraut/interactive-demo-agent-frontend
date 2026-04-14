@@ -1,11 +1,11 @@
-@if (demoStatus() === 'listing' || demoStatus() === 'connecting' || demoStatus() === 'disconnected') {
+@if (showSelector()) {
   <app-workflow-selector
     [workflows]="workflows()"
     (select)="onWorkflowSelect($event)"
   />
 }
 
-@if (demoStatus() !== 'listing' && demoStatus() !== 'connecting' && demoStatus() !== 'disconnected') {
+@if (!showSelector()) {
   <div class="demo-shell">
 
     <header class="demo-header">
@@ -16,7 +16,7 @@
         }
       </div>
       <div class="header-right">
-        <span class="conn-indicator" [class.online]="wsService.connected()">
+        <span class="conn-pill" [class.online]="wsService.connected()">
           {{ wsService.connected() ? '● Live' : '○ Reconnecting…' }}
         </span>
       </div>
@@ -24,58 +24,149 @@
 
     <main class="demo-main">
 
-      <section class="left-col">
+      <!-- Video -->
+      <div class="video-wrapper">
         <app-video-player
           [videoSrc]="videoSrc()"
-          [controlEvent]="latestVideoControl()"
+          [controlEvent]="stampedControl()"
           (timestamp$)="onVideoTimestamp($event)"
         />
 
-        <app-narration-panel
-          [segmentIndex]="segmentIndex()"
-          [segmentTitle]="segmentTitle()"
-          [narrationText]="narrationText()"
-        />
+        @if (segmentTitle()) {
+          <div class="segment-badge">
+            <span class="seg-num">Step {{ segmentIndex() + 1 }}</span>
+            <span class="seg-title">{{ segmentTitle() }}</span>
+          </div>
+        }
+      </div>
 
-        <app-demo-controls
-          [demoStatus]="demoStatus()"
-          (next)="sendCommand('next')"
-          (pause)="sendCommand('pause')"
-          (restart)="sendCommand('restart')"
-          (quit)="sendCommand('quit')"
-        />
-      </section>
+      <!-- Controls -->
+      <div class="control-bar">
+        <div class="playback-controls">
 
-      <aside class="right-col">
-        <app-chat-panel
-          [demoStatus]="demoStatus()"
-          [isRecording]="voiceService.recording()"
-          [messages]="chatMessages()"
-          [thinking]="thinking()"
-          (sendText)="onUserText($event)"
-          (voiceToggle)="onVoiceToggle()"
-        />
-      </aside>
+          <!-- Pause / Play toggle -->
+          <button
+            class="ctrl-btn"
+            [class.active]="isPaused()"
+            (click)="onPausePlayToggle()"
+            [disabled]="!canControl()"
+          >
+            @if (isPaused()) {
+              <span class="btn-icon">▶</span>
+              <span class="btn-label">Play</span>
+            } @else {
+              <span class="btn-icon">⏸</span>
+              <span class="btn-label">Pause</span>
+            }
+          </button>
+
+          <button
+            class="ctrl-btn"
+            (click)="onRestart()"
+            [disabled]="!canControl()"
+          >
+            <span class="btn-icon">↺</span>
+            <span class="btn-label">Restart</span>
+          </button>
+
+          <button
+            class="ctrl-btn ctrl-btn--danger"
+            (click)="onEnd()"
+            [disabled]="!canControl()"
+          >
+            <span class="btn-icon">✕</span>
+            <span class="btn-label">End</span>
+          </button>
+        </div>
+
+        <!-- Mic — disabled only when analyzing/responding, NOT when listening -->
+        <button
+          class="mic-btn"
+          [class.listening]="voiceState() === 'listening'"
+          [class.analyzing]="voiceState() === 'analyzing' || voiceState() === 'responding'"
+          [disabled]="voiceState() === 'analyzing' || voiceState() === 'responding' || (!canControl() && voiceState() === 'idle')"
+          (click)="onMicClick()"
+        >
+          @if (voiceState() === 'idle') {
+            <span class="mic-icon">🎙</span>
+            <span class="mic-label">Ask</span>
+          }
+          @if (voiceState() === 'listening') {
+            <span class="mic-rings">
+              <span></span><span></span><span></span>
+            </span>
+            <span class="mic-icon">⏹</span>
+            <span class="mic-label">Stop</span>
+          }
+          @if (voiceState() === 'analyzing') {
+            <span class="mic-icon spin">⟳</span>
+            <span class="mic-label">Analyzing…</span>
+          }
+          @if (voiceState() === 'responding') {
+            <span class="mic-icon">🔊</span>
+            <span class="mic-label">Speaking…</span>
+          }
+        </button>
+      </div>
+
+      <!-- Agent response -->
+      @if (agentResponse()) {
+        <div class="response-card">
+          <div class="response-header">
+            <span class="response-icon">
+              @if (voiceState() === 'responding') { 🔊 } @else { 💬 }
+            </span>
+            <span class="response-label">Agent Response</span>
+            @if (voiceState() === 'responding') {
+              <span class="speaking-dots">
+                <span></span><span></span><span></span>
+              </span>
+            }
+          </div>
+          <p class="response-text">{{ agentResponse() }}</p>
+        </div>
+      }
+
+      <!-- Listening indicator -->
+      @if (voiceState() === 'listening') {
+        <div class="status-card listening-card">
+          <div class="wave">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <p>Listening… <small>auto-stops after 3s of silence</small></p>
+        </div>
+      }
+
+      <!-- Analyzing indicator -->
+      @if (voiceState() === 'analyzing') {
+        <div class="status-card analyzing-card">
+          <div class="spinner"></div>
+          <p>Analyzing your query…</p>
+        </div>
+      }
 
     </main>
 
+    <!-- Complete overlay -->
     @if (demoStatus() === 'complete') {
-      <div class="complete-overlay">
+      <div class="overlay">
         <div class="complete-card">
           <div class="complete-icon">✓</div>
           <h2>Demo Complete</h2>
           <p>Thanks for watching!</p>
-          <button class="btn-restart-demo" (click)="resetToSelector()">
+          <button class="btn-watch-again" (click)="resetToSelector()">
             Watch Another Demo
           </button>
         </div>
       </div>
     }
 
+    <!-- Error toast -->
     @if (errorMessage()) {
       <div class="error-toast" (click)="errorMessage.set(null)">
         ⚠ {{ errorMessage() }}
       </div>
     }
+
   </div>
 }
